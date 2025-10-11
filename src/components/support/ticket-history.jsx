@@ -1,4 +1,3 @@
-// app/components/support/ticket-history.jsx
 'use client';
 
 import React, { useState } from 'react';
@@ -19,8 +18,25 @@ const TicketHistory = () => {
       createdAt: '05/10/2024 10:30',
       updatedAt: 'HACE 2 horas',
     },
+    {
+      id: 'TKT-002',
+      status: 'Abierto',
+      priority: 'Medio',
+      title: 'Dispositivo WCH-005 no sincroniza',
+      createdAt: '05/10/2024 08:30',
+      updatedAt: 'HACE 3 horas',
+    },
+    {
+      id: 'TKT-003',
+      status: 'Abierto',
+      priority: 'Medio',
+      title: 'Dispositivo WCH-006 no sincroniza',
+      createdAt: '05/10/2024 09:30',
+      updatedAt: 'HACE 1 horas',
+    },
     // ... puedes agregar más tickets aquí
   ];
+
 
   return (
     <div className="mt-10">
@@ -62,3 +78,4 @@ const TicketHistory = () => {
 };
 
 export default TicketHistory;
+
