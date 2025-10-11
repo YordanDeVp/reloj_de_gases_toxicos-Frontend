@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import React, { useState } from "react";
 import { FaUserShield, FaUserCheck, FaHardHat } from "react-icons/fa";
 import { FiMail, FiLock, FiEye, FiEyeOff, FiActivity, FiArrowLeft } from "react-icons/fi";
@@ -194,9 +194,12 @@ const SafeMineLoginScreen = () => {
 
               <p className="text-center text-sm mt-8 text-[#8B9DC3]">
                 ¿No tienes una cuenta?{" "}
-                <a href="#" className="font-medium text-[#00D9FF] hover:underline">
+                <Link
+                  href="/autenticacion/register"
+                  className="font-medium text-[#00D9FF] hover:underline"
+                >
                   Regístrate aquí
-                </a>
+                </Link>
               </p>
             </>
           ) : (
