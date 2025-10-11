@@ -1,4 +1,3 @@
-// app/components/support/ticket-item.jsx
 import React from 'react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';

@@ -1,4 +1,3 @@
-// app/components/ui/badge.jsx
 import React from 'react';
 
 export const Badge = ({ className, variant = 'default', ...props }) => {

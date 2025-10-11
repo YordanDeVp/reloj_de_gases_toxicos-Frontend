@@ -1,4 +1,3 @@
-// app/components/support/support-header.jsx
 import React from 'react';
 
 const SupportHeader = () => {

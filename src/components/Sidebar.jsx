@@ -55,7 +55,7 @@ const Sidebar = () => {
           </div>
           {!collapsed && (
             <>
-              <p className="mt-3 font-semibold">Juan Pérez</p>
+              <p className="mt-3 font-semibold">Andrew Peralta </p>
               <span className="text-xs bg-[#002F4E] text-[#00D9FF] px-3 py-1 rounded-full mt-1">
                 Operador
               </span>

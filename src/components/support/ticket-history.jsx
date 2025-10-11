@@ -1,7 +1,10 @@
+// app/components/support/ticket-history.jsx
 'use client';
 
 import React, { useState } from 'react';
 import TicketItem from './ticket-item';
+import LiveChatView from './chat/live-chat-view';
+import NewTicketForm from './new-ticket-form'; // <-- 1. IMPORTAR EL NUEVO FORMULARIO
 
 const TABS = ['Mis Tickets', 'Chat en Vivo', 'Nuevo Ticket'];
 
@@ -34,9 +37,7 @@ const TicketHistory = () => {
       createdAt: '05/10/2024 09:30',
       updatedAt: 'HACE 1 horas',
     },
-    // ... puedes agregar más tickets aquí
   ];
-
 
   return (
     <div className="mt-10">
@@ -71,11 +72,14 @@ const TicketHistory = () => {
             </div>
           </div>
         )}
-        {/* Aquí puedes agregar el contenido para las otras pestañas */}
+        
+        {activeTab === 'Chat en Vivo' && <LiveChatView />}
+
+        {/* 2. RENDERIZAR EL FORMULARIO AQUÍ */}
+        {activeTab === 'Nuevo Ticket' && <NewTicketForm />}
       </div>
     </div>
   );
 };
 
 export default TicketHistory;
-

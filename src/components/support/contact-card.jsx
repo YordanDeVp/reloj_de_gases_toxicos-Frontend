@@ -1,4 +1,3 @@
-// app/components/support/contact-card.jsx
 import React from 'react';
 import { Button } from './ui/button';
 
