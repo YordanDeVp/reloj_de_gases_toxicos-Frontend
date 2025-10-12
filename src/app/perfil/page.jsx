@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '@/components/profile/layout/header';
 import ProfileHeader from '@/components/profile/profile/profile-header';
 import SubscriptionCard from '@/components/profile/profile/subscription-card';
 import ProfileTabs from '@/components/profile/profile/profile-tabs';
@@ -28,9 +27,6 @@ export default function ProfilePage() {
   return (
     <div className="w-full h-full flex flex-col">
       
-      {/* 1. Cabecera superior (con la búsqueda, etc.) */}
-      <Header />
-
       {/* 2. Contenedor del contenido principal con padding */}
       <div className="p-8 space-y-8">
         

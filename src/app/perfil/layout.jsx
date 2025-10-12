@@ -1,31 +1,23 @@
-import { Inter } from "next/font/google";
-import Sidebar from "@/components/profile/layout/sidebar.jsx"; // Importamos el menú lateral
+"use client";
+import Sidebar from "@/components/Sidebar";
+import Topbar from "@/components/Topbar";
 
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "SafeMine IoT",
-  description: "Panel de control de SafeMine IoT",
-};
-
-export default function RootLayout({ children }) {
+export default function ConfiguracionLayout({ children }) {
   return (
-    <html lang="es">
-      <body className={`${inter.className} bg-[#0F172A] text-gray-300`}>
-        {/* Usamos Flexbox para crear el layout de dos columnas */}
-        <div className="flex min-h-screen">
-          
-          {/* Componente del Menú Lateral (Sidebar) */}
-          <Sidebar />
+    <div className="flex h-screen bg-[#0A0E1A] text-white font-[Inter] overflow-hidden">
+      {/* Sidebar fijo */}
+      <Sidebar />
 
-          {/* Contenedor principal que crecerá para ocupar el espacio restante */}
-          <main className="flex-1">
-            {children}
-          </main>
+      {/* Contenedor principal */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Topbar fijo */}
+        <Topbar />
 
-        </div>
-      </body>
-    </html>
+        {/* Contenido desplazable */}
+        <main className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-[#00D9FF]/40 scrollbar-track-transparent">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }
