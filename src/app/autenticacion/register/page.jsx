@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   FaUserShield,
   FaUserCheck,
@@ -16,11 +17,16 @@ import {
 } from "react-icons/fi";
 
 const SafeMineRegister = () => {
+  const router = useRouter();
+
+  // Control de pasos del proceso de registro (1 a 4)
   const [step, setStep] = useState(1);
+
+  // Control de visibilidad de contraseñas
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Datos del paso 1
+  // Paso 1: Datos personales
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -28,19 +34,20 @@ const SafeMineRegister = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Paso 2
+  // Paso 2: Tipo de cuenta
   const [selectedAccount, setSelectedAccount] = useState("Operador");
 
-  // Paso 3
+  // Paso 3: Información empresarial
   const [company, setCompany] = useState("");
   const [sector, setSector] = useState("");
   const [country, setCountry] = useState("");
   const [code, setCode] = useState("");
 
-  // Paso 4
+  // Paso 4: Verificación
   const [verifyCode, setVerifyCode] = useState("");
   const [accepted, setAccepted] = useState(false);
 
+  // Indicador visual de seguridad de contraseña
   const passwordStrength = () => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -52,9 +59,18 @@ const SafeMineRegister = () => {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  const handleSubmit = (e) => {
+  // Manejo del envío final del formulario
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Cuenta creada exitosamente 🚀");
+
+    if (!accepted) return;
+
+    /* INTEGRACIÓN API - REGISTRO DE USUARIO */
+
+    alert("Cuenta creada exitosamente");
+
+    // redirige al login
+    router.push("/autenticacion/login");
   };
 
   return (
@@ -63,10 +79,12 @@ const SafeMineRegister = () => {
       style={{ backgroundColor: "#0A0E1A" }}
     >
       <div className="w-full max-w-4xl bg-[#0A0E1A] border border-[#2A3550] rounded-3xl p-8 shadow-[0_0_30px_rgba(0,217,255,0.1)]">
-        {/* Header */}
+        {/* HEADER */}
         <div className="flex items-center justify-between mb-6">
           <button
-            onClick={() => (step > 1 ? prevStep() : (window.location.href = "/autenticacion/login"))}
+            onClick={() =>
+              step > 1 ? prevStep() : router.push("/autenticacion/login")
+            }
             className="flex items-center gap-2 text-[#00D9FF] hover:underline"
           >
             <FiArrowLeft /> Volver al inicio de sesión
@@ -78,7 +96,7 @@ const SafeMineRegister = () => {
           SafeMine IoT - Registro
         </h1>
 
-        {/* Barra de progreso */}
+        {/* BARRA DE PROGRESO */}
         <div className="w-full bg-[#151B2D] rounded-full h-3 mb-6 border border-[#2A3550] overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500"
@@ -88,11 +106,9 @@ const SafeMineRegister = () => {
             }}
           />
         </div>
-        <p className="text-[#8B9DC3] mb-6">
-          Paso {step} de 4
-        </p>
+        <p className="text-[#8B9DC3] mb-6">Paso {step} de 4</p>
 
-        {/* Paso 1: Datos personales */}
+        {/* PASO 1 - Datos personales */}
         {step === 1 && (
           <form onSubmit={(e) => e.preventDefault()}>
             <h2 className="text-xl font-semibold mb-6">Datos Personales</h2>
@@ -131,25 +147,27 @@ const SafeMineRegister = () => {
               />
             </div>
 
-            {/* Contraseñas */}
+            {/* CONTRASEÑAS */}
             <div className="mt-4 grid md:grid-cols-2 gap-4">
+              {/* Contraseña */}
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Contraseña"
-                  className="w-full bg-[#151B2D] border-2 border-[#2A3550] rounded-lg py-3 pl-4 pr-10 text-white placeholder-[#8B9DC3] focus:border-[#00D9FF]"
+                  className="w-full bg-[#151B2D] border-2 border-[#2A3550] rounded-lg py-3 pl-4 pr-11 text-white placeholder-[#8B9DC3] focus:border-[#00D9FF] focus:outline-none"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-3 flex items-center text-[#8B9DC3] hover:text-white"
+                  className="absolute top-1/5 -translate-y-1/2 right-3 text-[#8B9DC3] hover:text-white focus:outline-none"
+                  tabIndex={-1}
                 >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                 </button>
 
-                {/* Barra de seguridad */}
+                {/* Barra de seguridad visual */}
                 <div className="w-full h-2 bg-[#1E2640] rounded mt-2 overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${
@@ -165,11 +183,7 @@ const SafeMineRegister = () => {
                 </div>
 
                 <ul className="text-xs mt-2 space-y-1 text-[#8B9DC3]">
-                  <li
-                    className={
-                      password.length >= 8 ? "text-[#00FF88]" : ""
-                    }
-                  >
+                  <li className={password.length >= 8 ? "text-[#00FF88]" : ""}>
                     • Mínimo 8 caracteres
                   </li>
                   <li
@@ -181,37 +195,34 @@ const SafeMineRegister = () => {
                   >
                     • Mayúsculas y minúsculas
                   </li>
-                  <li
-                    className={/\d/.test(password) ? "text-[#00FF88]" : ""}
-                  >
+                  <li className={/\d/.test(password) ? "text-[#00FF88]" : ""}>
                     • Al menos un número
                   </li>
                 </ul>
               </div>
 
+              {/* Confirmar contraseña */}
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirmar Contraseña"
-                  className="w-full bg-[#151B2D] border-2 border-[#2A3550] rounded-lg py-3 pl-4 pr-10 text-white placeholder-[#8B9DC3] focus:border-[#00D9FF]"
+                  className="w-full bg-[#151B2D] border-2 border-[#2A3550] rounded-lg py-3 pl-4 pr-11 text-white placeholder-[#8B9DC3] focus:border-[#00D9FF] focus:outline-none"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowConfirmPassword(!showConfirmPassword)
-                  }
-                  className="absolute inset-y-0 right-3 flex items-center text-[#8B9DC3] hover:text-white"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute top-1/5 -translate-y-1/2 right-3 text-[#8B9DC3] hover:text-white focus:outline-none"
+                  tabIndex={-1}
                 >
-                  {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                  {showConfirmPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                 </button>
-                {confirmPassword &&
-                  confirmPassword !== password && (
-                    <p className="text-red-500 text-sm mt-2">
-                      Las contraseñas no coinciden
-                    </p>
-                  )}
+                {confirmPassword && confirmPassword !== password && (
+                  <p className="text-red-500 text-sm mt-2">
+                    Las contraseñas no coinciden
+                  </p>
+                )}
               </div>
             </div>
 
@@ -219,22 +230,23 @@ const SafeMineRegister = () => {
               type="button"
               onClick={nextStep}
               className="w-full mt-8 py-3 rounded-lg text-[#0A0E1A] font-bold transition-all duration-300"
-              style={{
-                backgroundColor: "#00D9FF",
-              }}
+              style={{ backgroundColor: "#00D9FF" }}
             >
               Siguiente
             </button>
           </form>
         )}
 
-        {/* Paso 2: Tipo de cuenta */}
+        {/* PASO 2 - Tipo de cuenta */}
         {step === 2 && (
           <div>
             <h2 className="text-xl font-semibold mb-6">Tipo de Cuenta</h2>
             <p className="text-[#8B9DC3] mb-4">
               Selecciona el tipo de acceso que necesitas
             </p>
+
+            {/* Aquí podrías obtener los tipos de usuario desde tu API */}
+
             <div className="grid md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-1">
               {[
                 {
@@ -281,10 +293,7 @@ const SafeMineRegister = () => {
                 >
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center gap-3">
-                      <span
-                        className="text-xl"
-                        style={{ color: type.color }}
-                      >
+                      <span className="text-xl" style={{ color: type.color }}>
                         {type.icon}
                       </span>
                       <h3 className="font-semibold text-white text-sm">
@@ -326,12 +335,14 @@ const SafeMineRegister = () => {
           </div>
         )}
 
-        {/* Paso 3: Información Empresa */}
+        {/* PASO 3 - Información empresarial */}
         {step === 3 && (
           <div>
             <h2 className="text-xl font-semibold mb-6">
               Información de la Empresa
             </h2>
+
+            {/* Aquí podrías consumir un endpoint para listar países o sectores */}
 
             <input
               type="text"
@@ -394,14 +405,16 @@ const SafeMineRegister = () => {
           </div>
         )}
 
-        {/* Paso 4: Verificación */}
+        {/* PASO 4 - Verificación */}
         {step === 4 && (
           <form onSubmit={handleSubmit}>
             <h2 className="text-xl font-semibold mb-6">Verificación</h2>
             <p className="text-[#8B9DC3] mb-2">
               Enviamos un código de verificación a
             </p>
-            <p className="text-white mb-6">{email || "kev.pq@gmail.com"}</p>
+            <p className="text-white mb-6">{email || "usuario@correo.com"}</p>
+
+            {/* INTEGRACIÓN API - ENVÍO DE CÓDIGO */}
 
             <input
               type="text"
@@ -417,6 +430,7 @@ const SafeMineRegister = () => {
               <button
                 type="button"
                 className="text-[#00D9FF] hover:underline"
+                // Aquí iría la función para reenviar el código
               >
                 Reenviar código
               </button>
